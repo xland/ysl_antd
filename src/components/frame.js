@@ -18,7 +18,7 @@ class Frame extends Component {
   componentDidMount() {
     var s = this;
     ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
-      s.setState({treeFunc:data.data,});
+      s.setState({treeFunc:data.data,subFunc:data.data[0].children});
     })
   };
   topMenuClick({item,key,keyPath}){
@@ -54,7 +54,10 @@ class Frame extends Component {
               </Menu.Item>
             </SubMenu>
           </Menu>
-          <Menu onClick={this.topMenuClick.bind(this)} theme="dark" mode="horizontal" style={{marginLeft: "180px", marginRight: "180px", height: "46px"}}>
+          <Menu onClick={this.topMenuClick.bind(this)}
+                defaultSelectedKeys={['0']}
+                theme="dark" mode="horizontal"
+                style={{marginLeft: "180px", marginRight: "180px", height: "46px"}}>
             {
               this.state.treeFunc.map((item,index)=>{
                 return (
@@ -72,8 +75,8 @@ class Frame extends Component {
             this.state.subFunc.map((item,index)=>{
               return (
                 <Menu.Item key={index}>
-                  <Link to="sys/func">
-                    <i class="icon-xitongguanli"></i>{item.func_name}
+                  <Link to={item.path}>
+                    <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}
                   </Link>
                 </Menu.Item>
               )
