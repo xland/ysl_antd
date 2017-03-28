@@ -77,10 +77,15 @@ class Func extends Component {
       dataIndex: 'path',
       key: 'path',
     }, {
+      title: '权限图标',
+      dataIndex: 'icon',
+      key: 'icon',
+      width: 198,
+    },{
       title: '权限排序',
       dataIndex: 'order_num',
       key: 'order_num',
-      width: 120,
+      width: 108,
     }, {
       title: '操作',
       key: 'operation',

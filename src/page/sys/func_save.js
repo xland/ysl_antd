@@ -36,7 +36,7 @@ class FuncSave extends Component {
       wrapperCol: { span: 16 },
     };
     const { getFieldDecorator } = this.props.form;
-    const { func_name, order_num, path,des,id,pid } = this.props.record;
+    const { func_name, order_num, path,des,icon } = this.props.record;
     return (<Modal visible={this.props.isVisable>=0}
                    key={this.props.dialogKey}
                    onCancel={this.dialogOk.bind(this,false)}
@@ -63,6 +63,13 @@ class FuncSave extends Component {
             })(<Input size="small" />)
           }
         </FormItem>
+        <FormItem {...formItemLayout}  label="权限图标">
+          {
+            getFieldDecorator('icon', {
+              initialValue: icon,
+            })(<Input size="small" />)
+          }
+        </FormItem>
         <FormItem {...formItemLayout}  label="权限排序">
           {
             getFieldDecorator('order_num', {
@@ -83,7 +90,6 @@ class FuncSave extends Component {
             })(<Input size="small" type="textarea" rows={4} />)
           }
         </FormItem>
-        <Input type={'hidden'} />
       </Form>
     </Modal>);
   }

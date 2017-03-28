@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Menu, Icon} from 'antd'
 import { Link } from 'dva/router'
 import ajax from '../utils/ajax'
-import './frame.less'
+import styles from './frame.less'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -21,6 +21,11 @@ class Frame extends Component {
       s.setState({treeFunc:data.data,});
     })
   };
+  topMenuClick({item,key,keyPath}){
+    if(this.state.treeFunc[key].children){
+      this.setState({subFunc:this.state.treeFunc[key].children});
+    }
+  }
   render(){
     return (
       <div>
@@ -49,12 +54,13 @@ class Frame extends Component {
               </Menu.Item>
             </SubMenu>
           </Menu>
-          <Menu theme="dark" mode="horizontal" style={{marginLeft: "180px", marginRight: "180px", height: "46px"}}>
+          <Menu onClick={this.topMenuClick.bind(this)} theme="dark" mode="horizontal" style={{marginLeft: "180px", marginRight: "180px", height: "46px"}}>
             {
               this.state.treeFunc.map((item,index)=>{
                 return (
-                  <Menu.Item key={item.id}>
-                    <Icon type="mail"/>{item.func_name}
+                  <Menu.Item key={index}>
+                    <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>
+                    {item.func_name}
                   </Menu.Item>
                 )
               })
@@ -62,36 +68,43 @@ class Frame extends Component {
           </Menu>
         </div>
         <Menu style={{width: 180, position: "absolute", left: "0px", top: "48px", bottom: '0px'}} mode="vertical">
-          <Menu.Item key="5">
-            <Link to="sys/func">
-              <Icon type="mail"/>权限设置
-            </Link>
-          </Menu.Item>
-          <SubMenu key="sub1" title={<span><Icon type="mail"/><span>账户设置</span></span>}>
-            <MenuItemGroup title="Item 1">
-              <Menu.Item key="1"></Menu.Item>
-              <Menu.Item key="2">Option 2</Menu.Item>
-            </MenuItemGroup>
-            <MenuItemGroup title="Iteom 2">
-              <Menu.Item key="3">Option 3</Menu.Item>
-              <Menu.Item key="4">Option 4</Menu.Item>
-            </MenuItemGroup>
-          </SubMenu>
-          <SubMenu key="sub2" title={<span><Icon type="appstore"/><span>Navigation Two</span></span>}>
-            <Menu.Item key="5">Option 5</Menu.Item>
-            <Menu.Item key="6">Option 6</Menu.Item>
-            <SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="7">Option 7</Menu.Item>
-              <Menu.Item key="8">Option 8</Menu.Item>
-            </SubMenu>
-          </SubMenu>
-          <SubMenu key="sub4" title={<span><icon type="setting"/><span>Navigation Three</span></span>}>
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <Menu.Item key="11">Option 11</Menu.Item>
-            <Menu.Item key="12">Option 12</Menu.Item>
-          </SubMenu>
+          {
+            this.state.subFunc.map((item,index)=>{
+              return (
+                <Menu.Item key={index}>
+                  <Link to="sys/func">
+                    <i class="icon-xitongguanli"></i>{item.func_name}
+                  </Link>
+                </Menu.Item>
+              )
+            })
+          }
         </Menu>
+
+        {/*<SubMenu key="sub1" title={<span><Icon type="mail"/><span>账户设置</span></span>}>*/}
+          {/*<MenuItemGroup title="Item 1">*/}
+            {/*<Menu.Item key="1"></Menu.Item>*/}
+            {/*<Menu.Item key="2">Option 2</Menu.Item>*/}
+          {/*</MenuItemGroup>*/}
+          {/*<MenuItemGroup title="Iteom 2">*/}
+            {/*<Menu.Item key="3">Option 3</Menu.Item>*/}
+            {/*<Menu.Item key="4">Option 4</Menu.Item>*/}
+          {/*</MenuItemGroup>*/}
+        {/*</SubMenu>*/}
+        {/*<SubMenu key="sub2" title={<span><Icon type="appstore"/><span>Navigation Two</span></span>}>*/}
+          {/*<Menu.Item key="5">Option 5</Menu.Item>*/}
+          {/*<Menu.Item key="6">Option 6</Menu.Item>*/}
+          {/*<SubMenu key="sub3" title="Submenu">*/}
+            {/*<Menu.Item key="7">Option 7</Menu.Item>*/}
+            {/*<Menu.Item key="8">Option 8</Menu.Item>*/}
+          {/*</SubMenu>*/}
+        {/*</SubMenu>*/}
+        {/*<SubMenu key="sub4" title={<span><icon type="setting"/><span>Navigation Three</span></span>}>*/}
+          {/*<Menu.Item key="9">Option 9</Menu.Item>*/}
+          {/*<Menu.Item key="10">Option 10</Menu.Item>*/}
+          {/*<Menu.Item key="11">Option 11</Menu.Item>*/}
+          {/*<Menu.Item key="12">Option 12</Menu.Item>*/}
+        {/*</SubMenu>*/}
       </div>
     )
   }
