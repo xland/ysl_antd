@@ -1,36 +1,53 @@
 import React, {Component} from 'react'
-import {Table, Popconfirm, Row, Col, Button, Card,Tag} from 'antd'
-import FuncSave from './func_save'
+import {Table, Popconfirm, Row, Col, Button, Card,Tag,Input} from 'antd'
+import AccountSave from './account_save'
 import ajax from '../../utils/ajax'
 import util from '../../utils/util'
+
+const Search = Input.Search;
 
 class Account extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      treeFunc:[],
-      dialogType:-1,
+      accountArr:[],
+      rowCount:0,
+      tableHeight:180,
+      dialogVisable:false,
       dialogTitle:'增加',
       dialogRecord:{},
       dialogKey:'',
     }
   };
-
+  onWindowResize(){
+    let h = document.body.clientHeight-198;
+    if(h < 180){
+      h = 180;
+    }
+    this.setState({tableHeight:h});
+  };
   componentDidMount() {
+    window.addEventListener('resize', this.onWindowResize)
+    this.onWindowResize();
     var s = this;
     ajax.post("Sys/Account/GetAccountByPage",{}).then(function ({data}) {
-      s.setState({treeFunc:data.data,});
+      console.log(data);
+      s.setState({accountArr:data.data,rowCount:data.rowCount});
     })
   };
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResize)
+  }
 
   dialogOk(flag){
-    this.setState({dialogVisable:-1,dialogKey:util.createId(),});
-    if(flag){
-      var s = this;
-      ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
-        s.setState({treeFunc:data.data,});
-      })
+    if(!flag){
+      this.setState({dialogVisable:false,dialogKey:util.createId(),});
+      return;
     }
+    var s = this;
+    ajax.post("Sys/Account/GetAccountByPage",{}).then(function ({data}) {
+      s.setState({accountArr:data.data,dialogVisable:false,dialogKey:util.createId(),rowCount:data.rowCount,});
+    })
   }
 
   del(id){
@@ -38,28 +55,16 @@ class Account extends Component {
     ajax.post("Sys/Func/DelFunc",{id}).then(function ({data}) {
       if(data.code === 0){
         ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
-          s.setState({treeFunc:data.data,});
+          s.setState({accountArr:data.data,});
         })
       }
     })
   }
-  openDialog(r,type){
-    var cur={};
-    var t;
-    if(type===1){
-      t="增加同级菜单"
-      cur.pid = r.pid;
-    }else if(type === 2){
-      t="增加子级菜单";
-      cur.pid = r.id;
-    }else{
-      t = '修改权限';
-      cur = r;
-    }
+  openDialog(r){
     this.setState({
-      dialogVisable:type,
-      dialogTitle:t,
-      dialogRecord:cur,
+      dialogVisable:true,
+      dialogTitle:"增加账户",
+      dialogRecord:r,
     });
   }
 
@@ -73,7 +78,7 @@ class Account extends Component {
       title: '账户创建时间',
       dataIndex: 'add_time',
       key: 'add_time',
-      width: 280,
+      width: 180,
       render:text=>{
         return (text.replace(/T/,' '))
       }
@@ -81,28 +86,39 @@ class Account extends Component {
       title: '操作',
       key: 'operation',
       fixed: 'right',
-      width: 360,
+      width: 220,
       render: (text, record, index) => {
         return (
           <div>
-            <Popconfirm title="确认要删除该记录吗?" onConfirm={this.del.bind(this, record.id)}>
+            <Popconfirm title="确认要删除该帐号吗?" onConfirm={this.del.bind(this, record.id)}>
               <Tag color="red">删除</Tag>
             </Popconfirm>
             <Tag onClick={this.openDialog.bind(this,record,0)} color="blue">修改</Tag>
-            <Tag onClick={this.openDialog.bind(this,record,1)} color="blue">增加同级菜单</Tag>
-            <Tag onClick={this.openDialog.bind(this,record,2)} color="blue">增加子级菜单</Tag>
           </div>
         )
       },
     }];
     return(
       <div>
-        <Table columns={columns}
-               pagination={false}
+        <div style={{height:36,paddingTop:6,clear:'both'}}>
+          <Search size="small"
+            placeholder="请输入要搜索的帐号"
+            style={{ width: 200,float:'left' }}
+            onSearch={value => console.log(value)}
+          />
+          <Tag onClick={this.openDialog.bind(this,{})} style={{float:"right"}} color="blue-inverse">新增账户</Tag>
+        </div>
+        <Table columns={columns} scroll={{ y: this.state.tableHeight }}
+               pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:38,
+                 showTotal:(total, range) => {
+                  return (
+                   <span style={{color:'#acacac'}}>系统中共有{total}行记录，本页从第{range[0]}行记录开始，共展示{range[1]-range[0]+1}行记录</span>
+                  )}
+               }}
                rowKey={record => record.id}
-               dataSource={this.state.treeFunc}
+               dataSource={this.state.accountArr}
                bordered size="small"/>
-        <FuncSave title={this.state.dialogTitle}
+        <AccountSave title={this.state.dialogTitle}
                   record={this.state.dialogRecord}
                   isVisable={this.state.dialogVisable}
                   dialogKey={this.state.dialogKey}

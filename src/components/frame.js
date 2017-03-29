@@ -16,6 +16,7 @@ class Frame extends Component {
     }
   };
   componentDidMount() {
+    console.log(this.props.path);
     var s = this;
     ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
       s.setState({treeFunc:data.data,subFunc:data.data[0].children});
@@ -75,7 +76,7 @@ class Frame extends Component {
             this.state.subFunc.map((item,index)=>{
               if(item.children&&item.children.length>0){
                 return(
-                  <SubMenu key={index} title={<i className={`iconfont ${item.icon} ${styles.yslicon}`}>{item.func_name}</i>}>
+                  <SubMenu key={index} title={<span><i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}</span>}>
                     {
                       item.children.map((item,index)=>{
                         return(

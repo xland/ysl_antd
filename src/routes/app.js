@@ -14,7 +14,7 @@ import '../components/layout/common.less'
 function App ({ children, location, dispatch, app, loading }) {
   return (
     <div>
-      <Frame />
+      <Frame path={location.pathname} />
       <div style={{position:"absolute",top:"46px",left:"180px",right:"0px",bottom:"0px",
         padding:"6px",background:"#FFFFFF",
         overflowX:"hidden",overflowY:"scroll"}}>
