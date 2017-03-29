@@ -32,64 +32,14 @@ const Routers = function ({ history, app }) {
             }, 'sys/func')
           },
         },{
-          path: 'dashboard',
-          name: 'dashboard',
+          path: 'sys/account',
+          name: 'sys/account',
           getComponent (nextState, cb) {
             require.ensure([], require => {
-              registerModel(app, require('./models/dashboard'))
-              cb(null, require('./routes/dashboard'))
-            }, 'dashboard')
+              cb(null, require('./page/sys/account'))
+            }, 'sys/account')
           },
-        }, {
-          path: 'users',
-          name: 'users',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              registerModel(app, require('./models/users'))
-              cb(null, require('./routes/users'))
-            }, 'users')
-          },
-        }, {
-          path: 'ui/ico',
-          name: 'ui/ico',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              cb(null, require('./routes/ui/ico'))
-            }, 'ui-ico')
-          },
-        }, {
-          path: 'ui/search',
-          name: 'ui/search',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              cb(null, require('./routes/ui/search'))
-            }, 'ui-search')
-          },
-        }, {
-          path: 'ui/dropOption',
-          name: 'ui/dropOption',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              cb(null, require('./routes/ui/dropOption'))
-            }, 'ui-dropOption')
-          },
-        }, {
-          path: 'ui/layer',
-          name: 'ui/layer',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              cb(null, require('./routes/ui/layer'))
-            }, 'ui-layer')
-          },
-        }, {
-          path: 'ui/dataTable',
-          name: 'ui/dataTable',
-          getComponent (nextState, cb) {
-            require.ensure([], require => {
-              cb(null, require('./routes/ui/dataTable'))
-            }, 'ui-dataTable')
-          },
-        }, {
+        },{
           path: '*',
           name: 'error',
           getComponent (nextState, cb) {

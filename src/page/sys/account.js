@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import {Table, Popconfirm, Row, Col, Button, Card,Tag} from 'antd'
 import FuncSave from './func_save'
-import styles from './func.less'
 import ajax from '../../utils/ajax'
 import util from '../../utils/util'
 
-class Func extends Component {
+class Account extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,7 +18,7 @@ class Func extends Component {
 
   componentDidMount() {
     var s = this;
-    ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
+    ajax.post("Sys/Account/GetAccountByPage",{}).then(function ({data}) {
       s.setState({treeFunc:data.data,});
     })
   };
@@ -66,26 +65,19 @@ class Func extends Component {
 
   render(){
     const columns = [{
-      title: '权限名称',
-      dataIndex: 'func_name',
-      key: 'func_name',
+      title: '用户名',
+      dataIndex: 'account_name',
+      key: 'account_name',
+
+    }, {
+      title: '账户创建时间',
+      dataIndex: 'add_time',
+      key: 'add_time',
       width: 280,
-      className: styles.tdLeft,
-    }, {
-      title: '权限路径',
-      dataIndex: 'path',
-      key: 'path',
-    }, {
-      title: '权限图标',
-      dataIndex: 'icon',
-      key: 'icon',
-      width: 198,
+      render:text=>{
+        return (text.replace(/T/,' '))
+      }
     },{
-      title: '权限排序',
-      dataIndex: 'order_num',
-      key: 'order_num',
-      width: 108,
-    }, {
       title: '操作',
       key: 'operation',
       fixed: 'right',
@@ -120,4 +112,4 @@ class Func extends Component {
   }
 }
 
-export default Func
+export default Account

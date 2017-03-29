@@ -73,6 +73,23 @@ class Frame extends Component {
         <Menu style={{width: 180, position: "absolute", left: "0px", top: "48px", bottom: '0px'}} mode="vertical">
           {
             this.state.subFunc.map((item,index)=>{
+              if(item.children&&item.children.length>0){
+                return(
+                  <SubMenu key={index} title={<i className={`iconfont ${item.icon} ${styles.yslicon}`}>{item.func_name}</i>}>
+                    {
+                      item.children.map((item,index)=>{
+                        return(
+                          <Menu.Item key={index}>
+                            <Link to={item.path}>
+                              <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}
+                            </Link>
+                          </Menu.Item>
+                        )
+                      })
+                    }
+                  </SubMenu>
+                )
+              }
               return (
                 <Menu.Item key={index}>
                   <Link to={item.path}>
@@ -83,31 +100,6 @@ class Frame extends Component {
             })
           }
         </Menu>
-
-        {/*<SubMenu key="sub1" title={<span><Icon type="mail"/><span>账户设置</span></span>}>*/}
-          {/*<MenuItemGroup title="Item 1">*/}
-            {/*<Menu.Item key="1"></Menu.Item>*/}
-            {/*<Menu.Item key="2">Option 2</Menu.Item>*/}
-          {/*</MenuItemGroup>*/}
-          {/*<MenuItemGroup title="Iteom 2">*/}
-            {/*<Menu.Item key="3">Option 3</Menu.Item>*/}
-            {/*<Menu.Item key="4">Option 4</Menu.Item>*/}
-          {/*</MenuItemGroup>*/}
-        {/*</SubMenu>*/}
-        {/*<SubMenu key="sub2" title={<span><Icon type="appstore"/><span>Navigation Two</span></span>}>*/}
-          {/*<Menu.Item key="5">Option 5</Menu.Item>*/}
-          {/*<Menu.Item key="6">Option 6</Menu.Item>*/}
-          {/*<SubMenu key="sub3" title="Submenu">*/}
-            {/*<Menu.Item key="7">Option 7</Menu.Item>*/}
-            {/*<Menu.Item key="8">Option 8</Menu.Item>*/}
-          {/*</SubMenu>*/}
-        {/*</SubMenu>*/}
-        {/*<SubMenu key="sub4" title={<span><icon type="setting"/><span>Navigation Three</span></span>}>*/}
-          {/*<Menu.Item key="9">Option 9</Menu.Item>*/}
-          {/*<Menu.Item key="10">Option 10</Menu.Item>*/}
-          {/*<Menu.Item key="11">Option 11</Menu.Item>*/}
-          {/*<Menu.Item key="12">Option 12</Menu.Item>*/}
-        {/*</SubMenu>*/}
       </div>
     )
   }
