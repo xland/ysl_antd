@@ -35,7 +35,7 @@ class AccountSave extends Component {
       wrapperCol: { span: 16 },
     };
     const { getFieldDecorator } = this.props.form;
-    return (<Modal visible={this.props.isVisable}
+    return (<Modal visible={this.props.dialogType>0}
                    key={this.props.dialogKey}
                    onCancel={this.dialogOk.bind(this,false)}
                    onOk={this.dialogOk.bind(this,true)}
@@ -51,7 +51,7 @@ class AccountSave extends Component {
                   message: '不能为空',
                 },
               ],
-            })(<Input size="small" />)
+            })(<Input size="small" disabled={this.props.dialogType === 2} />)
           }
         </FormItem>
         <FormItem {...formItemLayout}  label="密码">
