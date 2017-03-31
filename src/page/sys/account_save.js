@@ -55,7 +55,7 @@ class AccountSave extends Component {
                 },{
                   validator: (r,v,cb)=>{
                     const { getFieldValue } = this.props.form;
-                    if (v.length>2) {
+                    if (v.length>2&&this.props.dialogType === 1) {
                       ajax.post("Sys/Account/CheckAccountName",{account_name:v}).then(function ({data}) {
                         if(data.data){
                           cb('系统中已存在相同的帐号！');

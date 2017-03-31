@@ -40,6 +40,14 @@ const Routers = function ({ history, app }) {
             }, 'sys/account')
           },
         },{
+          path: 'sys/role',
+          name: 'sys/role',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./page/sys/role'))
+            }, 'sys/role')
+          },
+        },{
           path: '*',
           name: 'error',
           getComponent (nextState, cb) {

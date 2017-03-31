@@ -6,7 +6,7 @@ import util from '../../utils/util'
 
 const Search = Input.Search;
 
-class Account extends Component {
+class Role extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,7 +14,7 @@ class Account extends Component {
       rowCount:0,
       tableHeight:180,
       dialogType:0,
-      dialogTitle:'增加',
+      dialogTitle:'增加账户',
       dialogRecord:{},
       dialogKey:'',
       searchTxt:'',
@@ -153,7 +153,7 @@ class Account extends Component {
                   value={this.state.searchTxt}
             onSearch={this.searchAccount}
           />
-          <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增账户</Tag>
+          <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增角色</Tag>
         </div>
         <Table columns={columns} scroll={{ y: this.state.tableHeight }}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:38,
@@ -173,4 +173,4 @@ class Account extends Component {
   }
 }
 
-export default Account
+export default Role
