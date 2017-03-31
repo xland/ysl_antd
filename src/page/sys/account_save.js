@@ -49,7 +49,25 @@ class AccountSave extends Component {
                 {
                   required: true,
                   message: '不能为空',
-                },
+                }, {
+                  min:3,
+                  message: '不能少于2个字符',
+                },{
+                  validator: (r,v,cb)=>{
+                    const { getFieldValue } = this.props.form;
+                    if (v.length>2) {
+                      ajax.post("Sys/Account/CheckAccountName",{account_name:v}).then(function ({data}) {
+                        if(data.data){
+                          cb('系统中已存在相同的帐号！');
+                        }else{
+                          cb()
+                        }
+                      })
+                      return;
+                    }
+                    cb()
+                  }
+                }
               ],
             })(<Input size="small" disabled={this.props.dialogType === 2} />)
           }
@@ -73,12 +91,13 @@ class AccountSave extends Component {
               initialValue: this.props.record.pass_word,
               rules: [{
                 required: true,
-                message: '请再次输入以确认新密码',
+                message: '请再次输入以确认密码',
               }, {
                 validator: (r,v,cb)=>{
                   const { getFieldValue } = this.props.form;
                   if (v && v !== getFieldValue('pass_word')) {
                     cb('两次输入不一致！');
+                    return;
                   }
                   cb()
                 }
