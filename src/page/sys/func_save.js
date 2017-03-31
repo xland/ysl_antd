@@ -87,7 +87,7 @@ class FuncSave extends Component {
           {
             getFieldDecorator('des', {
               initialValue: des,
-            })(<Input size="small" type="textarea" rows={4} />)
+            })(<Input size="small" type="textarea" rows="4" />)
           }
         </FormItem>
       </Form>

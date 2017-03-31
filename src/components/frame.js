@@ -19,6 +19,7 @@ class Frame extends Component {
     console.log(this.props.path);
     var s = this;
     ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
+      console.log(data)
       s.setState({treeFunc:data.data,subFunc:data.data[0].children});
     })
   };
