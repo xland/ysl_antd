@@ -22,7 +22,7 @@ class Account extends Component {
       roleDialogVisable:false,
       searchTxt:'',
       curPageIndex:1,
-      selectedRoles:[],
+      selectedRoleIds:[],
     }
   };
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
@@ -97,9 +97,17 @@ class Account extends Component {
   }
 
   openRoleDialog(r,type){
-    this.setState({
-      roleDialogVisable:true,
-      dialogRecord:r,
+    var s = this;
+    ajax.post("Sys/Account/GetAccountRole", {
+      id: r.id
+    }).then(function ({data}) {
+      var arr = data.data.map(item=>item.id)
+      s.setState({
+        roleDialogVisable:true,
+        dialogRecord:r,
+        selectedRoleIds: arr
+      });
+      s.refs.accountRoleDialog.selectRows();
     });
   }
 
@@ -193,8 +201,9 @@ class Account extends Component {
                   onOk={this.dialogOk.bind(this)} />
         <AccountRole record={this.state.dialogRecord}
                      dialogVisable={this.state.roleDialogVisable}
+                     ref="accountRoleDialog"
                      dialogKey={this.state.roleDialogKey}
-                     selectedRoles={this.state.selectedRoles}
+                     selectedRoleIds={this.state.selectedRoleIds}
                      onOk={this.roleDialogOk.bind(this)}></AccountRole>
       </div>
     )

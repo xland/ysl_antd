@@ -12,42 +12,39 @@ class AccountRole extends Component {
     }
   };
 
-  componentWillMount() {
+  componentDidMount() {
     var s = this;
     ajax.post("Sys/Role/GetAllRole").then(function ({data}) {
       s.setState({roleArr: data.data});
     })
   }
 
-  componentWillReceiveProps(){
-    if(!this.props.dialogVisable){
-      var s = this;
-      ajax.post("Sys/Account/GetAccountRole", {
-        id: this.props.record.id
-      }).then(function ({data}) {
-        var arr = data.data.map(item=>item.id)
-        s.setState({selectedArr: arr});
-      })
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.startTime !== this.state.startTime) {
+      this.setState({ startTime: nextProps.startTime });
     }
   }
 
   dialogOk(flag) {
-    if (!flag) {
-      this.props.onOk();
-      return;
+    if (flag) {
+      var s = this;
+      var a_r = [];
+      this.state.selectedArr.forEach((item,index)=>{
+        var obj = {account_id:this.props.record.id,role_id:item};
+        a_r.push(obj);
+      });
+      ajax.post("Sys/Account/UpdateAccountRole",{
+        account_id:this.props.record.id,
+        account_role:a_r,
+      }).then(function ({data}) {
+      })
     }
-    var s = this;
-    var a_r = [];
-    this.state.selectedArr.forEach((item,index)=>{
-      var obj = {account_id:this.props.record.id,role_id:item};
-      a_r.push(obj);
-    });
-    ajax.post("Sys/Account/UpdateAccountRole",{
-      account_id:this.props.record.id,
-      account_role:a_r,
-    }).then(function ({data}) {
-    })
+    this.setState({selectedArr: []});
     this.props.onOk();
+  }
+
+  selectRows(){
+    this.setState({selectedArr:this.props.selectedRoleIds})
   }
 
   columns = [{
@@ -55,10 +52,6 @@ class AccountRole extends Component {
     key: 'role_name',
     title: '角色名称',
   }]
-
-  rowSelection = () => {
-    return
-}
 
   render() {
     return (<Modal visible={this.props.dialogVisable}
