@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Table, Popconfirm, Row, Col, Button, Card,Tag,Input} from 'antd'
 import AccountSave from './account_save'
+import AccountRole from './account_role'
 import ajax from '../../utils/ajax'
 import util from '../../utils/util'
 
@@ -17,6 +18,8 @@ class Account extends Component {
       dialogTitle:'增加',
       dialogRecord:{},
       dialogKey:'',
+      roleDialogKey:'',
+      roleDialogVisable:false,
       searchTxt:'',
       curPageIndex:1,
     }
@@ -59,6 +62,18 @@ class Account extends Component {
       s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
     })
   }
+  roleDialogOk(flag){
+    if(!flag){
+      this.setState({roleDialogVisable:false,roleDialogKey:util.createId(),});
+      return;
+    }
+    var s = this;
+    ajax.post("Sys/Account/GetAccountByPage",{
+      pager:{page_index:this.state.curPageIndex-1}
+    }).then(function ({data}) {
+      s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
+    })
+  }
 
   del(id){
     var s = this;
@@ -76,6 +91,13 @@ class Account extends Component {
     this.setState({
       dialogType:type,
       dialogTitle:type===1?"增加账户":'修改账户',
+      dialogRecord:r,
+    });
+  }
+
+  openRoleDialog(r,type){
+    this.setState({
+      roleDialogVisable:true,
       dialogRecord:r,
     });
   }
@@ -137,7 +159,7 @@ class Account extends Component {
               <Tag color="red">删除</Tag>
             </Popconfirm>
             <Tag onClick={this.openDialog.bind(this,record,2)} color="blue">修改</Tag>
-            <Tag onClick={this.openDialog.bind(this,record,2)} color="blue">设置角色</Tag>
+            <Tag onClick={this.openRoleDialog.bind(this,record)} color="blue">设置角色</Tag>
           </div>
         )
       },
@@ -168,6 +190,10 @@ class Account extends Component {
                   dialogType={this.state.dialogType}
                   dialogKey={this.state.dialogKey}
                   onOk={this.dialogOk.bind(this)} />
+        <AccountRole record={this.state.dialogRecord}
+                     dialogVisable={this.state.roleDialogVisable}
+                     dialogKey={this.state.roleDialogKey}
+                     onOk={this.roleDialogOk.bind(this)}></AccountRole>
       </div>
     )
   }
