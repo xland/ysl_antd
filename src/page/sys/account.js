@@ -22,6 +22,7 @@ class Account extends Component {
       roleDialogVisable:false,
       searchTxt:'',
       curPageIndex:1,
+      selectedRoles:[],
     }
   };
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
@@ -193,6 +194,7 @@ class Account extends Component {
         <AccountRole record={this.state.dialogRecord}
                      dialogVisable={this.state.roleDialogVisable}
                      dialogKey={this.state.roleDialogKey}
+                     selectedRoles={this.state.selectedRoles}
                      onOk={this.roleDialogOk.bind(this)}></AccountRole>
       </div>
     )
