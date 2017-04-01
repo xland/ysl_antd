@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Table, Popconfirm, Row, Col, Button, Card, Tag, Input} from 'antd'
 import RoleSave from './role_save'
+import RoleFunc from './role_func'
 import ajax from '../../utils/ajax'
 import util from '../../utils/util'
 
@@ -75,6 +76,12 @@ class Role extends Component {
       dialogRecord: r,
     });
   }
+  openFuncDialog(r, type) {
+    this.setState({
+      dialogRecord: r,
+    });
+    this.refs.roleFuncDialog.showDialog();
+  }
 
   columns = [{
     title: '角色名称',
@@ -98,7 +105,7 @@ class Role extends Component {
             <Tag color="red">删除</Tag>
           </Popconfirm>
           <Tag onClick={this.openDialog.bind(this, record, 2)} color="blue">修改</Tag>
-          <Tag onClick={this.openDialog.bind(this, record, 2)} color="blue">设置权限</Tag>
+          <Tag onClick={this.openFuncDialog.bind(this,record)} color="blue">设置权限</Tag>
         </div>
       )
     },
@@ -106,7 +113,6 @@ class Role extends Component {
 
   render() {
 
-    //todo:滚动条有瑕疵
     return (
       <div>
         <div style={{height: 36, paddingTop: 6, clear: 'both'}}>
@@ -122,6 +128,11 @@ class Role extends Component {
                   dialogType={this.state.dialogType}
                   dialogKey={this.state.dialogKey}
                   onOk={this.dialogOk.bind(this)}/>
+        <RoleFunc
+          record={this.state.dialogRecord}
+          ref="roleFuncDialog"
+          dialogKey={this.state.roleDialogKey}
+          selectedRoleIds={this.state.selectedRoleIds}></RoleFunc>
       </div>
     )
   }

@@ -19,12 +19,6 @@ class AccountRole extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.startTime !== this.state.startTime) {
-      this.setState({ startTime: nextProps.startTime });
-    }
-  }
-
   dialogOk(flag) {
     if (flag) {
       var s = this;
