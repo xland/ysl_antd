@@ -67,6 +67,7 @@ class RoleFunc extends Component {
                    onCancel={this.dialogOk.bind(this, false)}
                    onOk={this.dialogOk.bind(this, true)}
                    title={`给角色设置权限`}>
+      <div style={{height:280,overflowY:'scroll',margin:-16}}>
       <Tree
         checkable
         onSelect={this.onSelect}
@@ -78,6 +79,7 @@ class RoleFunc extends Component {
           })
         }
       </Tree>
+      </div>
     </Modal>);
   }
 
