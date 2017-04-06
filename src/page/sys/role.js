@@ -21,17 +21,7 @@ class Role extends Component {
   };
 
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
-  // onWindowResize(s){
-  //   let h = document.body.clientHeight-198;
-  //   if(h < 180){
-  //     h = 180;
-  //   }
-  //   console.log(h);
-  //   s.setState({tableHeight:h});
-  // };
   componentDidMount() {
-    // window.addEventListener('resize', this.onWindowResize(this))
-    // this.onWindowResize(this);
     let h = document.body.clientHeight - 198;
     if (h < 180) {
       h = 180;
@@ -42,10 +32,6 @@ class Role extends Component {
       s.setState({roleArr: data.data});
     })
   };
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this.onWindowResize)
-  // }
 
   dialogOk(flag) {
     if (!flag) {
@@ -80,7 +66,7 @@ class Role extends Component {
     this.setState({
       dialogRecord: r,
     });
-    this.refs.roleFuncDialog.showDialog();
+    this.refs.roleFuncDialog.showDialog(r);
   }
 
   columns = [{
@@ -131,8 +117,7 @@ class Role extends Component {
         <RoleFunc
           record={this.state.dialogRecord}
           ref="roleFuncDialog"
-          dialogKey={this.state.roleDialogKey}
-          selectedRoleIds={this.state.selectedRoleIds}></RoleFunc>
+          dialogKey={this.state.roleDialogKey}></RoleFunc>
       </div>
     )
   }

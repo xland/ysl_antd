@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {Modal, Table,Tree} from 'antd';
 import ajax from '../../utils/ajax'
+import util from '../../utils/util'
 const TreeNode = Tree.TreeNode;
 
 class RoleFunc extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      dialogKey:'',
       funcs: [],
       selectedArr:[],
       visable:false,
@@ -23,30 +25,33 @@ class RoleFunc extends Component {
   dialogOk(flag) {
     if (flag) {
       var s = this;
-      var a_r = [];
-      this.state.selectedArr.forEach((item,index)=>{
-        var obj = {account_id:this.props.record.id,role_id:item};
-        a_r.push(obj);
+      var a_r = this.state.selectedArr.map((item)=>{
+        return {role_id:s.props.record.id,func_id:item};
       });
-      ajax.post("Sys/Account/UpdateAccountRole",{
-        account_id:this.props.record.id,
-        account_role:a_r,
+      ajax.post("Sys/Role/SaveRoleFunc",{
+        role_id:s.props.record.id,
+        role_func:a_r,
       }).then(function ({data}) {
-      })
-    }else{
-      this.setState({visable:false})
-    }
-    this.setState({selectedArr: []});
-  }
 
-  selectRows(){
-    this.setState({selectedArr:this.props.selectedRoleIds})
+      })
+    }
+    this.setState({visable:false,selectedArr: [],dialogKey:util.createId()});
   }
 
   showDialog(r){
-    this.setState({visable:true})
+    var self = this;
+    ajax.post("Sys/Role/GetRoleFunc",{
+      id:r.id
+    }).then(function ({data}) {
+      var arr = data.data.map(item=>{
+        return item.id;
+      })
+      self.setState({visable:true,selectedArr:arr});
+    })
   }
-
+  onCheck(checkedKeys){
+    this.setState({selectedArr:checkedKeys});
+  }
   getTreeNode(item){
     var subs;
     if(item.children){
@@ -63,15 +68,15 @@ class RoleFunc extends Component {
 
   render() {
     return (<Modal visible={this.state.visable}
-                   key={this.props.dialogKey}
+                   key={this.state.dialogKey}
                    onCancel={this.dialogOk.bind(this, false)}
                    onOk={this.dialogOk.bind(this, true)}
                    title={`给角色设置权限`}>
       <div style={{height:280,overflowY:'scroll',margin:-16}}>
       <Tree
         checkable
-        onSelect={this.onSelect}
-        onCheck={this.onCheck}
+        onCheck={this.onCheck.bind(this)}
+        checkedKeys={this.state.selectedArr}
       >
         {
           this.state.funcs.map(item=>{
