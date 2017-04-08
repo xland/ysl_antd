@@ -34,15 +34,20 @@ class Department extends Component {
 
   del(id){
     var s = this;
-    ajax.post("Sys/Func/DelFunc",{id}).then(function ({data}) {
+    ajax.post("Hrm/Department/DelDepartment",{id}).then(function ({data}) {
       if(data.code === 0){
-        ajax.post("Sys/Func/GetAllFuncTree").then(function ({data}) {
+        ajax.post("Hrm/Department/GetAllDepartmentTree").then(function ({data}) {
           s.setState({treeFunc:data.data,});
         })
       }
     })
   }
   openDialog(r,type){
+    if(type === 1){
+      r = {pid:r.pid};
+    }else if(type === 2){
+      r = {pid:r.id};
+    }
     this.setState({dialogRecord:r,dialogType:type});
   }
 
