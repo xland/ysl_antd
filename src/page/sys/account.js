@@ -123,7 +123,8 @@ class Account extends Component {
     }).then(function ({data}) {
       s.setState({accountArr:data.data,
         curPageIndex:page,
-        rowCount:data.rowCount});
+        rowCount:data.rowCount
+      });
     })
   }
 
@@ -136,9 +137,6 @@ class Account extends Component {
       s.setState({accountArr:data.data,
         rowCount:data.rowCount});
     })
-  }
-  changeSearchTxt = (e)=>{
-
   }
 
 
@@ -187,13 +185,13 @@ class Account extends Component {
           <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增账户</Tag>
         </div>
         <Table columns={columns} scroll={{ y: this.state.tableHeight }}
-               pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:38,
+               pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,
                  onChange:this.changePagerIndex,
                  showTotal:this.getPagerTxt,
                }}
                rowKey={record => record.id}
                dataSource={this.state.accountArr}
-               bordered size="small"/>
+               bordered size="small" />
         <AccountSave title={this.state.dialogTitle}
                   record={this.state.dialogRecord}
                   dialogType={this.state.dialogType}

@@ -48,6 +48,14 @@ const Routers = function ({ history, app }) {
             }, 'sys/role')
           },
         },{
+          path: 'hrm/department',
+          name: 'hrm/department',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./page/hrm/department'))
+            }, 'hrm/department')
+          },
+        },{
           path: '*',
           name: 'error',
           getComponent (nextState, cb) {
