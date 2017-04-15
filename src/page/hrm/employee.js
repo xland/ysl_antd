@@ -14,7 +14,6 @@ class Employee extends Component {
       rowCount:0,
       tableHeight:180,
       dialogType:0,
-      dialogTitle:'增加',
       dialogRecord:{},
       dialogKey:'',
       roleDialogKey:'',
@@ -77,7 +76,6 @@ class Employee extends Component {
   openDialog(r,type){
     this.setState({
       dialogType:type,
-      dialogTitle:type===1?"增加账户":'修改账户',
       dialogRecord:r,
     });
   }
@@ -127,7 +125,8 @@ class Employee extends Component {
 
 
   render(){
-    const columns = [{
+    const columns = [
+      {
       title: '姓名',
       dataIndex: 'account_name',
       key: 'account_name',
@@ -270,7 +269,11 @@ class Employee extends Component {
                rowKey={record => record.id}
                dataSource={this.state.accountArr}
                bordered size="small" />
-        <EmployeeSave />
+        <EmployeeSave
+          dialogRecord={this.state.dialogRecord}
+          dialogType={this.state.dialogType}
+          onOk={this.dialogOk.bind(this)}
+        />
       </div>
     )
   }
