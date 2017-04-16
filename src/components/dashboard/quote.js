@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import styles from './quote.less'
 
 function Quote ({ name, content, title, avatar }) {
   return (

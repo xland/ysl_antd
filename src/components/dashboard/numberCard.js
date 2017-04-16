@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Icon, Card } from 'antd'
 import CountUp from 'react-countup'
-import styles from './numberCard.less'
 
 function NumberCard ({ icon, color, title, number, countUp }) {
   return (

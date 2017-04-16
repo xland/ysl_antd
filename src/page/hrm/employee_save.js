@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input,InputNumber,Col,Row,Radio,DatePicker  } from 'antd';
 import ajax from '../../utils/ajax'
+import util from '../../utils/util'
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
@@ -53,8 +54,8 @@ class EmployeeSave extends Component {
           wrapperCol: { span: 15 },
         }} label="姓名">
           {
-            getFieldDecorator('account_name', {
-              initialValue: this.props.dialogRecord.account_name,
+            getFieldDecorator('employee_name', {
+              initialValue: this.props.dialogRecord.employee_name,
               rules: [
                 {
                   required: true,
@@ -72,13 +73,7 @@ class EmployeeSave extends Component {
         }} label="性别">
           {
             getFieldDecorator('sex', {
-              initialValue: this.props.dialogRecord.sex,
-              rules: [
-                {
-                  required: true,
-                  message: '不能为空',
-                },
-              ],
+              initialValue: this.props.dialogRecord.sex?this.props.dialogRecord.sex:1,
             })(<RadioGroup onChange={this.onChange}>
               <Radio value={1}>男</Radio>
               <Radio value={2}>女</Radio>
@@ -99,8 +94,17 @@ class EmployeeSave extends Component {
                   rules: [
                     {
                       required: true,
-                      message: '不能为空',
+                      message: ' ',
                     },
+                    {
+                      validator: (r,v,cb)=>{
+                        var flag = util.IdentityCodeValid(v);
+                        if(!flag){
+                          cb('身份证号码错误！')
+                        }
+                        cb()
+                      }
+                    }
                   ],
                 })(<Input size="small" />)
               }
@@ -133,13 +137,7 @@ class EmployeeSave extends Component {
             }} label="婚否">
               {
                 getFieldDecorator('marriage', {
-                  initialValue: this.props.dialogRecord.marriage,
-                  rules: [
-                    {
-                      required: true,
-                      message: '不能为空',
-                    },
-                  ],
+                  initialValue: this.props.dialogRecord.marriage?this.props.dialogRecord.marriage:2,
                 })(<RadioGroup onChange={this.onChange}>
                   <Radio value={1}>已婚</Radio>
                   <Radio value={2}>未婚</Radio>
@@ -154,7 +152,7 @@ class EmployeeSave extends Component {
             }} label="育儿数">
               {
                 getFieldDecorator('childrenNum', {
-                  initialValue: this.props.dialogRecord.childrenNum,
+                  initialValue: this.props.dialogRecord.childrenNum?this.props.dialogRecord.childrenNum:0,
                   rules: [
                     {
                       required: true,

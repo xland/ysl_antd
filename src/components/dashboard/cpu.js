@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import styles from './cpu.less'
 import { color } from '../../utils'
 import CountUp from 'react-countup'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts'

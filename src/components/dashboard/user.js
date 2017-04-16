@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { Button } from 'antd'
-import styles from './user.less'
 import CountUp from 'react-countup'
 import { color } from '../../utils'
 const countUpProps = {

@@ -1,15 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'dva'
 import Frame from '../components/Frame'
-import Login from './login'
-import Header from '../components/layout/header'
-import Bread from '../components/layout/bread'
-import Footer from '../components/layout/footer'
-import Sider from '../components/layout/sider'
-import styles from '../components/layout/main.less'
-import { Spin } from 'antd'
-import { classnames } from '../utils'
-import '../components/layout/common.less'
+
 
 function App ({ children, location, dispatch, app, loading }) {
   return (

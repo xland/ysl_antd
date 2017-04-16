@@ -26,10 +26,11 @@ class Employee extends Component {
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
   componentDidMount() {
     let h = document.body.clientHeight-198;
+    let w = document.body.clientWidth-188;
     if(h < 180){
       h = 180;
     }
-    this.setState({tableHeight:h});
+    this.setState({tableHeight:h,tableWidth:w});
     var s = this;
     ajax.post("Hrm/Employee/GetEmployeeByPage",{pager:{}}).then(function ({data}) {
       s.setState({accountArr:data.data,rowCount:data.rowCount});
@@ -42,7 +43,7 @@ class Employee extends Component {
       return;
     }
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Hrm/Employee/GetEmployeeByPage",{
       pager:{page_index:this.state.curPageIndex-1}
     }).then(function ({data}) {
       s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
@@ -63,9 +64,9 @@ class Employee extends Component {
 
   del(id){
     var s = this;
-    ajax.post("Sys/Account/DelAccount",{id}).then(function ({data}) {
+    ajax.post("Hrm/Employee/DelEmployee",{id}).then(function ({data}) {
       if(data.code === 0){
-        ajax.post("Sys/Account/GetAccountByPage",{
+        ajax.post("Hrm/Employee/GetEmployeeByPage",{
           pager:{page_index:this.state.curPageIndex-1}
         }).then(function ({data}) {
           s.setState({accountArr:data.data,rowCount:data.rowCount});
@@ -128,19 +129,21 @@ class Employee extends Component {
     const columns = [
       {
       title: '姓名',
-      dataIndex: 'account_name',
-      key: 'account_name',
-      width: 120,
+      dataIndex: 'employee_name',
+      key: 'employee_name',
+      fixed: 'left',
+      width: 80,
     },{
       title: '性别',
       dataIndex: 'sex',
       key: 'sex',
-      width: 120,
+      width: 58,
+      fixed: 'left',
       render:text=>{
         let t = "未知";
-        if(text === 0){
+        if(text === "0"){
           t = "女";
-        }else if(text === 1){
+        }else if(text === "1"){
           t = "男";
         }
         return (t)
@@ -149,7 +152,7 @@ class Employee extends Component {
       title: '身份证',
       dataIndex: 'id_num',
       key: 'id_num',
-      width: 120,
+      width: 200,
     }, {
       title: '工号',
       dataIndex: 'emp_num',
@@ -159,12 +162,12 @@ class Employee extends Component {
       title: '婚姻',
       dataIndex: 'marriage',
       key: 'marriage',
-      width: 120,
+      width: 80,
       render:text=>{
         let t = "未知";
-        if(text === 0){
+        if(text === "0"){
           t = "未婚";
-        }else if(text === 1){
+        }else if(text === "1"){
           t = "已婚";
         }
         return (t)
@@ -181,17 +184,17 @@ class Employee extends Component {
       title: '到岗时间',
       dataIndex: 'in_time',
       key: 'in_time',
-      width: 120,
+      width: 80,
       render:text=>{
-        return (text.replace(/T/,' '))
+        return (text.split('T')[0])
       }
     },{
       title: '转正时间',
       dataIndex: 'regular_time',
       key: 'regular_time',
-      width: 120,
+      width: 80,
       render:text=>{
-        return (text.replace(/T/,' '))
+        return (text.split('T')[0])
       }
     },{
       title: '常用号码',
@@ -202,32 +205,35 @@ class Employee extends Component {
       title: '紧急联系人',
       dataIndex: 'emergency_name',
       key: 'emergency_name',
-      width: 120,
+      width: 160,
     }, {
       title: '紧急联系号码',
       dataIndex: 'emergency_phone_num',
       key: 'emergency_phone_num',
-      width: 120,
+      width: 160,
     }, {
       title: '生日',
       dataIndex: 'birthday',
       key: 'birthday',
-      width: 120,
+      width: 80,
+      render:text=>{
+        return (text.split('T')[0])
+      },
     },{
       title: '状态',
       dataIndex: 'employee_state',
       key: 'employee_state',
-      width: 120,
+      width: 60,
     },{
       title: '座机',
       dataIndex: 'telphone',
       key: 'telphone',
-      width: 120,
+      width: 80,
     },{
-      title: '增加时间',
+      title: '录入时间',
       dataIndex: 'add_time',
       key: 'add_time',
-      width: 120,
+      width: 128,
       render:text=>{
         return (text.replace(/T/,' '))
       }
@@ -235,19 +241,20 @@ class Employee extends Component {
       title: '操作',
       key: 'operation',
       fixed: 'right',
-      width: 220,
+      width: 120,
       render: (text, record, index) => {
         return (
           <div>
-            <Popconfirm title="确认要删除该帐号吗?" onConfirm={this.del.bind(this, record.id)}>
+            <Popconfirm title="确认要删除该员工吗?" onConfirm={this.del.bind(this, record.id)}>
               <Tag color="red">删除</Tag>
             </Popconfirm>
             <Tag onClick={this.openDialog.bind(this,record,2)} color="blue">修改</Tag>
-            <Tag onClick={this.openRoleDialog.bind(this,record)} color="blue">设置角色</Tag>
           </div>
         )
       },
     }];
+
+
     //todo:滚动条有瑕疵
     return(
       <div>
@@ -261,14 +268,15 @@ class Employee extends Component {
           />
           <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增员工</Tag>
         </div>
-        <Table columns={columns} scroll={{ y: this.state.tableHeight,x: 1000 }}
+        <Table style={{width:this.state.tableWidth,}} columns={columns} scroll={{ y: this.state.tableHeight,x: 1768 }}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,
                  onChange:this.changePagerIndex,
                  showTotal:this.getPagerTxt,
                }}
+               size="small"
                rowKey={record => record.id}
                dataSource={this.state.accountArr}
-               bordered size="small" />
+                />
         <EmployeeSave
           dialogRecord={this.state.dialogRecord}
           dialogType={this.state.dialogType}

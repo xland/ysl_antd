@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Menu, Icon} from 'antd'
 import { Link } from 'dva/router'
 import ajax from '../utils/ajax'
-import styles from './frame.less'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -64,7 +63,7 @@ class Frame extends Component {
               this.state.treeFunc.map((item,index)=>{
                 return (
                   <Menu.Item key={index}>
-                    <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>
+                    <i className={`iconfont ${item.icon} `}></i>
                     {item.func_name}
                   </Menu.Item>
                 )
@@ -77,13 +76,13 @@ class Frame extends Component {
             this.state.subFunc.map((item,index)=>{
               if(item.children&&item.children.length>0){
                 return(
-                  <SubMenu key={index} title={<span><i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}</span>}>
+                  <SubMenu key={index} title={<span><i className={`iconfont ${item.icon} `}></i>{item.func_name}</span>}>
                     {
                       item.children.map((item,index)=>{
                         return(
                           <Menu.Item key={index}>
                             <Link to={item.path}>
-                              <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}
+                              <i className={`iconfont ${item.icon} `}></i>{item.func_name}
                             </Link>
                           </Menu.Item>
                         )
@@ -95,7 +94,7 @@ class Frame extends Component {
               return (
                 <Menu.Item key={index}>
                   <Link to={item.path}>
-                    <i className={`iconfont ${item.icon} ${styles.yslicon}`}></i>{item.func_name}
+                    <i className={`iconfont ${item.icon}`}></i>{item.func_name}
                   </Link>
                 </Menu.Item>
               )

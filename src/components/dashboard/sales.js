@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import styles from './sales.less'
 import classnames from 'classnames'
 import { color } from '../../utils'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'

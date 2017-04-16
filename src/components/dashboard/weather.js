@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import styles from './weather.less'
 
 function Weather ({ city, icon, dateTime, temperature, name }) {
   return (<div className={styles.weather}>
