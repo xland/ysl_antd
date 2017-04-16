@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Table, Popconfirm, Row, Col, Button, Card,Tag} from 'antd'
 import FuncSave from './func_save'
-import styles from './func.less'
 import ajax from '../../utils/ajax'
 import util from '../../utils/util'
 
@@ -70,7 +69,6 @@ class Func extends Component {
       dataIndex: 'func_name',
       key: 'func_name',
       width: 280,
-      className: styles.tdLeft,
     }, {
       title: '权限路径',
       dataIndex: 'path',

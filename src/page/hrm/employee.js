@@ -152,7 +152,7 @@ class Employee extends Component {
       title: '身份证',
       dataIndex: 'id_num',
       key: 'id_num',
-      width: 200,
+      width: 160,
     }, {
       title: '工号',
       dataIndex: 'emp_num',
@@ -176,7 +176,7 @@ class Employee extends Component {
       title: '孩子',
       dataIndex: 'childrenNum',
       key: 'childrenNum',
-      width: 120,
+      width: 80,
       render:text=>{
         return (text+"个")
       }
@@ -268,12 +268,11 @@ class Employee extends Component {
           />
           <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增员工</Tag>
         </div>
-        <Table style={{width:this.state.tableWidth,}} columns={columns} scroll={{ y: this.state.tableHeight,x: 1768 }}
+        <Table columns={columns} scroll={{ y: this.state.tableHeight,x: 1968 }}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,
                  onChange:this.changePagerIndex,
                  showTotal:this.getPagerTxt,
                }}
-               size="small"
                rowKey={record => record.id}
                dataSource={this.state.accountArr}
                 />
