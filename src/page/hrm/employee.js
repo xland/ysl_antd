@@ -26,7 +26,7 @@ class Employee extends Component {
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
   componentDidMount() {
     let h = document.body.clientHeight-198;
-    let w = document.body.clientWidth-188;
+    let w = document.body.clientWidth-50;
     if(h < 180){
       h = 180;
     }
@@ -268,11 +268,12 @@ class Employee extends Component {
           />
           <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增员工</Tag>
         </div>
-        <Table columns={columns} scroll={{ y: this.state.tableHeight,x: 1968 }}
+        <Table columns={columns} scroll={{ y: this.state.tableHeight,x: this.state.tableWidth }}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,
                  onChange:this.changePagerIndex,
                  showTotal:this.getPagerTxt,
                }}
+               bordered={true}
                rowKey={record => record.id}
                dataSource={this.state.accountArr}
                 />

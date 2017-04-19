@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Menu, Icon} from 'antd'
 import { Link } from 'dva/router'
 import ajax from '../utils/ajax'
+import '../themes/index.less'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
