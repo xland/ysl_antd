@@ -4,6 +4,7 @@ import ajax from '../../utils/ajax'
 import util from '../../utils/util'
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+var moment = require('moment');
 
 
 class EmployeeSave extends Component {
@@ -24,7 +25,7 @@ class EmployeeSave extends Component {
       if (err) {
         return;
       }
-      var obj = {...this.props.record,...values};
+      var obj = {...this.props.dialogRecord,...values};
       var s = this;
       ajax.post("Hrm/Employee/SaveEmployee",obj).then(function ({data}) {
         s.props.onOk(true);
@@ -73,7 +74,7 @@ class EmployeeSave extends Component {
         }} label="性别">
           {
             getFieldDecorator('sex', {
-              initialValue: this.props.dialogRecord.sex?this.props.dialogRecord.sex:1,
+              initialValue: this.props.dialogRecord.sex||1,
             })(<RadioGroup onChange={this.onChange}>
               <Radio value={1}>男</Radio>
               <Radio value={2}>女</Radio>
@@ -137,7 +138,7 @@ class EmployeeSave extends Component {
             }} label="婚否">
               {
                 getFieldDecorator('marriage', {
-                  initialValue: this.props.dialogRecord.marriage?this.props.dialogRecord.marriage:2,
+                  initialValue: this.props.dialogRecord.marriage||2,
                 })(<RadioGroup onChange={this.onChange}>
                   <Radio value={1}>已婚</Radio>
                   <Radio value={2}>未婚</Radio>
@@ -152,7 +153,7 @@ class EmployeeSave extends Component {
             }} label="育儿数">
               {
                 getFieldDecorator('childrenNum', {
-                  initialValue: this.props.dialogRecord.childrenNum?this.props.dialogRecord.childrenNum:0,
+                  initialValue: this.props.dialogRecord.childrenNum||0,
                   rules: [
                     {
                       required: true,
@@ -172,7 +173,7 @@ class EmployeeSave extends Component {
             }} label="到岗">
               {
                 getFieldDecorator('in_time', {
-                  initialValue: this.props.dialogRecord.in_time,
+                  initialValue: this.props.dialogRecord.in_time?moment(this.props.dialogRecord.in_time.split('T')[0]):moment(),
                   rules: [
                     {
                       required: true,
@@ -190,7 +191,7 @@ class EmployeeSave extends Component {
             }} label="转正">
               {
                 getFieldDecorator('regular_time', {
-                  initialValue: this.props.dialogRecord.regular_time,
+                  initialValue: this.props.dialogRecord.regular_time?moment(this.props.dialogRecord.regular_time.split('T')[0]):moment(),
                   rules: [
                     {
                       required: true,
