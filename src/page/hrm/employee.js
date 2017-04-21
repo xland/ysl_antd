@@ -10,7 +10,7 @@ class Employee extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      accountArr:[],
+      dataArr:[],
       rowCount:0,
       tableHeight:180,
       dialogType:0,
@@ -33,7 +33,7 @@ class Employee extends Component {
     this.setState({tableHeight:h,tableWidth:w});
     var s = this;
     ajax.post("Hrm/Employee/GetEmployeeByPage",{pager:{}}).then(function ({data}) {
-      s.setState({accountArr:data.data,rowCount:data.rowCount});
+      s.setState({dataArr:data.data,rowCount:data.rowCount});
     })
   };
 
@@ -46,7 +46,7 @@ class Employee extends Component {
     ajax.post("Hrm/Employee/GetEmployeeByPage",{
       pager:{page_index:this.state.curPageIndex-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
+      s.setState({dataArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
     })
   }
   roleDialogOk(flag){
@@ -58,7 +58,7 @@ class Employee extends Component {
     ajax.post("Sys/Account/GetAccountByPage",{
       pager:{page_index:this.state.curPageIndex-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
+      s.setState({dataArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
     })
   }
 
@@ -69,7 +69,7 @@ class Employee extends Component {
         ajax.post("Hrm/Employee/GetEmployeeByPage",{
           pager:{page_index:s.state.curPageIndex-1}
         }).then(function ({data}) {
-          s.setState({accountArr:data.data,rowCount:data.rowCount});
+          s.setState({dataArr:data.data,rowCount:data.rowCount});
         })
       }
     })
@@ -103,10 +103,10 @@ class Employee extends Component {
 
   changePagerIndex = (page, pageSize)=>{
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Sys/Employee/GetEmployeeByPage",{
       pager:{page_index:page-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,
+      s.setState({dataArr:data.data,
         curPageIndex:page,
         rowCount:data.rowCount
       });
@@ -115,11 +115,11 @@ class Employee extends Component {
 
   searchAccount = (v) => {
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Sys/Employee/GetEmployeeByPage",{
       pager:{page_index:this.state.curPageIndex-1},
       searchTxt:v
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,
+      s.setState({dataArr:data.data,
         rowCount:data.rowCount});
     })
   }
@@ -272,7 +272,7 @@ class Employee extends Component {
                }}
                bordered={true}
                rowKey={record => record.id}
-               dataSource={this.state.accountArr}
+               dataSource={this.state.dataArr}
                 />
         <EmployeeSave
           dialogRecord={this.state.dialogRecord}
