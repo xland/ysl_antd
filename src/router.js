@@ -64,6 +64,14 @@ const Routers = function ({ history, app }) {
             }, 'hrm/employee')
           },
         },{
+          path: 'hrm/train',
+          name: 'hrm/train',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              cb(null, require('./page/hrm/train'))
+            }, 'hrm/train')
+          },
+        },{
           path: '*',
           name: 'error',
           getComponent (nextState, cb) {

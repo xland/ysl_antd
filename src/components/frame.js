@@ -64,7 +64,7 @@ class Frame extends Component {
               this.state.treeFunc.map((item,index)=>{
                 return (
                   <Menu.Item key={index}>
-                    <i className={`iconfont ${item.icon} `}></i>
+                    <i className={`iconfont ${item.icon} frameIcon`}></i>
                     {item.func_name}
                   </Menu.Item>
                 )
@@ -77,13 +77,13 @@ class Frame extends Component {
             this.state.subFunc.map((item,index)=>{
               if(item.children&&item.children.length>0){
                 return(
-                  <SubMenu key={index} title={<span><i className={`iconfont ${item.icon} `}></i>{item.func_name}</span>}>
+                  <SubMenu key={index} title={<span><i className={`iconfont ${item.icon} frameIcon`}></i>{item.func_name}</span>}>
                     {
                       item.children.map((item,index)=>{
                         return(
                           <Menu.Item key={index}>
                             <Link to={item.path}>
-                              <i className={`iconfont ${item.icon} `}></i>{item.func_name}
+                              <i className={`iconfont ${item.icon} frameIcon`}></i>{item.func_name}
                             </Link>
                           </Menu.Item>
                         )
@@ -95,7 +95,7 @@ class Frame extends Component {
               return (
                 <Menu.Item key={index}>
                   <Link to={item.path}>
-                    <i className={`iconfont ${item.icon}`}></i>{item.func_name}
+                    <i className={`iconfont ${item.icon} frameIcon`}></i>{item.func_name}
                   </Link>
                 </Menu.Item>
               )
