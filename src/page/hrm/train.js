@@ -10,7 +10,7 @@ class Train extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      accountArr:[],
+      dataArr:[],
       rowCount:0,
       tableHeight:180,
       dialogType:0,
@@ -25,14 +25,6 @@ class Train extends Component {
     }
   };
   //todo:这里不是动态变化高度的，不知道为什么，暂时先不用
-  // onWindowResize(s){
-  //   let h = document.body.clientHeight-198;
-  //   if(h < 180){
-  //     h = 180;
-  //   }
-  //   console.log(h);
-  //   s.setState({tableHeight:h});
-  // };
   componentDidMount() {
     // window.addEventListener('resize', this.onWindowResize(this))
     // this.onWindowResize(this);
@@ -42,13 +34,10 @@ class Train extends Component {
     }
     this.setState({tableHeight:h});
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{pager:{}}).then(function ({data}) {
-      s.setState({accountArr:data.data,rowCount:data.rowCount});
+    ajax.post("Hrm/Train/GetTrainByPage",{pager:{}}).then(function ({data}) {
+      s.setState({dataArr:data.data,rowCount:data.rowCount});
     })
   };
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this.onWindowResize)
-  // }
 
   dialogOk(flag){
     if(!flag){
@@ -56,10 +45,10 @@ class Train extends Component {
       return;
     }
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Hrm/Train/GetTrainByPage",{
       pager:{page_index:this.state.curPageIndex-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
+      s.setState({dataArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
     })
   }
   roleDialogOk(flag){
@@ -68,10 +57,10 @@ class Train extends Component {
       return;
     }
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Hrm/Train/GetTrainByPage",{
       pager:{page_index:this.state.curPageIndex-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
+      s.setState({dataArr:data.data,dialogType:0,dialogKey:util.createId(),rowCount:data.rowCount,});
     })
   }
 
@@ -79,10 +68,10 @@ class Train extends Component {
     var s = this;
     ajax.post("Sys/Account/DelAccount",{id}).then(function ({data}) {
       if(data.code === 0){
-        ajax.post("Sys/Account/GetAccountByPage",{
+        ajax.post("Hrm/Train/GetTrainByPage",{
           pager:{page_index:this.state.curPageIndex-1}
         }).then(function ({data}) {
-          s.setState({accountArr:data.data,rowCount:data.rowCount});
+          s.setState({dataArr:data.data,rowCount:data.rowCount});
         })
       }
     })
@@ -90,25 +79,11 @@ class Train extends Component {
   openDialog(r,type){
     this.setState({
       dialogType:type,
-      dialogTitle:type===1?"增加账户":'修改账户',
+      dialogTitle:type===1?"增加培训项目":'修改培训项目',
       dialogRecord:r,
     });
   }
 
-  openRoleDialog(r,type){
-    var s = this;
-    ajax.post("Sys/Account/GetAccountRole", {
-      id: r.id
-    }).then(function ({data}) {
-      var arr = data.data.map(item=>item.id)
-      s.setState({
-        roleDialogVisable:true,
-        dialogRecord:r,
-        selectedRoleIds: arr
-      });
-      s.refs.accountRoleDialog.selectRows();
-    });
-  }
 
   getPagerTxt = (total, range) => {
     return (
@@ -117,7 +92,7 @@ class Train extends Component {
 
   changePagerIndex = (page, pageSize)=>{
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Hrm/Train/GetTrainByPage",{
       pager:{page_index:page-1}
     }).then(function ({data}) {
       s.setState({accountArr:data.data,
@@ -129,7 +104,7 @@ class Train extends Component {
 
   searchAccount = (v) => {
     var s = this;
-    ajax.post("Sys/Account/GetAccountByPage",{
+    ajax.post("Hrm/Train/GetTrainByPage",{
       pager:{page_index:this.state.curPageIndex-1},
       searchTxt:v
     }).then(function ({data}) {
@@ -179,7 +154,7 @@ class Train extends Component {
                   value={this.state.searchTxt}
             onSearch={this.searchAccount}
           />
-          <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增账户</Tag>
+          <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增培训项目</Tag>
         </div>
         <Table columns={columns} scroll={{ y: this.state.tableHeight }}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,

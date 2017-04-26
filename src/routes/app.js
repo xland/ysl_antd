@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'dva'
 import Frame from '../components/Frame'
 
@@ -14,14 +14,6 @@ function App ({ children, location, dispatch, app, loading }) {
       </div>
     </div>
   )
-}
-
-App.propTypes = {
-  children: PropTypes.element.isRequired,
-  location: PropTypes.object,
-  dispatch: PropTypes.func,
-  app: PropTypes.object,
-  loading: PropTypes.bool,
 }
 
 export default connect(({ app, loading }) => ({ app, loading: loading.models.app }))(App)

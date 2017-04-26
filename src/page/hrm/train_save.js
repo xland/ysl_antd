@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Modal, Table} from 'antd';
+import {Modal,Form} from 'antd';
 import ajax from '../../utils/ajax'
+const FormItem = Form.Item;
 
 
 class TrainSave extends Component {
@@ -14,9 +15,6 @@ class TrainSave extends Component {
 
   componentDidMount() {
     var s = this;
-    ajax.post("Sys/Role/GetAllRole").then(function ({data}) {
-      s.setState({roleArr: data.data});
-    })
   }
 
   dialogOk(flag) {
@@ -48,28 +46,21 @@ class TrainSave extends Component {
   }]
 
   render() {
-    return (<Modal visible={this.props.dialogVisable}
+    const formItemLayout = {
+      labelCol: { span: 5 },
+      wrapperCol: { span: 18 },
+    };
+    const { getFieldDecorator } = this.props.form;
+    return (<Modal visible={this.props.dialogType>0}
                    key={this.props.dialogKey}
+                   title={this.props.title}
                    onCancel={this.dialogOk.bind(this, false)}
-                   onOk={this.dialogOk.bind(this, true)}
-                   title={`给${this.props.record.account_name}设置角色`}>
-      <Table columns={this.columns}
-             rowKey="id"
-             scroll={{y: 198}}
-             pagination={false}
-             rowSelection={
-               {
-                 onChange: (selectedRowKeys, selectedRows) => {
-                   this.setState({selectedArr:selectedRowKeys})
-                 },
-                 selectedRowKeys: this.state.selectedArr,
-               }
-             }
-             dataSource={this.state.roleArr}
-             bordered size="small"/>
+                   onOk={this.dialogOk.bind(this, true)}>
+      <Form>
+
+      </Form>
     </Modal>);
   }
-
 }
 
-export default TrainSave;
+export default Form.create()(TrainSave);
