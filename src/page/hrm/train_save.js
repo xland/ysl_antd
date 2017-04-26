@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Modal,Form} from 'antd';
+import {Modal,Form, Input,InputNumber } from 'antd';
 import ajax from '../../utils/ajax'
 const FormItem = Form.Item;
 
@@ -14,7 +14,6 @@ class TrainSave extends Component {
   };
 
   componentDidMount() {
-    var s = this;
   }
 
   dialogOk(flag) {
@@ -35,20 +34,11 @@ class TrainSave extends Component {
     this.props.onOk();
   }
 
-  selectRows(){
-    this.setState({selectedArr:this.props.selectedRoleIds})
-  }
-
-  columns = [{
-    dataIndex: 'role_name',
-    key: 'role_name',
-    title: '角色名称',
-  }]
 
   render() {
     const formItemLayout = {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 6 },
+      wrapperCol: { span: 17 },
     };
     const { getFieldDecorator } = this.props.form;
     return (<Modal visible={this.props.dialogType>0}
@@ -57,7 +47,58 @@ class TrainSave extends Component {
                    onCancel={this.dialogOk.bind(this, false)}
                    onOk={this.dialogOk.bind(this, true)}>
       <Form>
-
+        <FormItem {...formItemLayout} label="培训项目名称">
+          {
+            getFieldDecorator('train_title', {
+              initialValue: this.props.record.train_title,
+              rules: [
+                {
+                  required: true,
+                  message: '不能为空',
+                },
+              ],
+            })(<Input size="small" />)
+          }
+        </FormItem>
+        <FormItem {...formItemLayout} label="开始-结束">
+          {
+            getFieldDecorator('train_title', {
+              initialValue: this.props.record.train_title,
+              rules: [
+                {
+                  required: true,
+                  message: '不能为空',
+                },
+              ],
+            })(<Input size="small" />)
+          }
+        </FormItem>
+        <FormItem {...formItemLayout} label="是否循环培训">
+        {
+          getFieldDecorator('train_title', {
+            initialValue: this.props.record.train_title,
+            rules: [
+              {
+                required: true,
+                message: '不能为空',
+              },
+            ],
+          })(<Input size="small" />)
+        }
+        </FormItem>
+        <FormItem {...formItemLayout} label="循环周期">
+          {
+            getFieldDecorator('train_title', {
+              initialValue: this.props.record.train_title,
+              rules: [
+                {
+                  required: true,
+                  message: '不能为空',
+                },
+              ],
+            })(<Input size="small" />)
+          }
+        </FormItem>
       </Form>
     </Modal>);
   }

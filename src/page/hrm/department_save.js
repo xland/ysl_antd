@@ -63,7 +63,7 @@ class DepartmentSave extends Component {
         <FormItem {...formItemLayout} label="部门排序">
           {
             getFieldDecorator('order_num', {
-              initialValue: this.props.dialogRecord.order_num?this.props.dialogRecord.order_num:0,
+              initialValue: this.props.dialogRecord.order_num||0,
               rules: [
                 {
                   required: true,
