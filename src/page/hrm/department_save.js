@@ -20,7 +20,6 @@ class DepartmentSave extends Component {
       s.props.form.validateFields((err, values) => {
         if (!err) {
           var obj = {...this.props.dialogRecord,...values};
-          console.log(obj)
           ajax.post("Hrm/Department/SaveDepartment",obj).then(function ({data}) {
             s.props.onOk(true);
           })

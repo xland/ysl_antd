@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import {Modal,Form, Input,InputNumber } from 'antd';
+import {Modal,Form, Input,InputNumber,DatePicker,Radio,Select  } from 'antd';
 import ajax from '../../utils/ajax'
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const Option = Select.Option;
+const { MonthPicker, RangePicker } = DatePicker;
 
 
 class TrainSave extends Component {
@@ -17,21 +20,22 @@ class TrainSave extends Component {
   }
 
   dialogOk(flag) {
+    var s = this;
     if (flag) {
-      var s = this;
-      var a_r = [];
-      this.state.selectedArr.forEach((item,index)=>{
-        var obj = {account_id:this.props.record.id,role_id:item};
-        a_r.push(obj);
+      s.props.form.validateFields((err, values) => {
+        if (!err) {
+          var obj = {...this.props.record,...values};
+          obj.begin_time = obj.rangeTime[0];
+          obj.end_time = obj.rangeTime[1];
+          obj.rangeTime = undefined;
+          ajax.post("Hrm/Train/SaveTrain",obj).then(function ({data}) {
+            s.props.onOk(true);
+          })
+        }
       });
-      ajax.post("Sys/Account/UpdateAccountRole",{
-        account_id:this.props.record.id,
-        account_role:a_r,
-      }).then(function ({data}) {
-      })
+    }else{
+      s.props.onOk(false);
     }
-    this.setState({selectedArr: []});
-    this.props.onOk();
   }
 
 
@@ -62,53 +66,56 @@ class TrainSave extends Component {
         </FormItem>
         <FormItem {...formItemLayout} label="开始-结束">
           {
-            getFieldDecorator('train_title', {
-              initialValue: this.props.record.train_title,
+            getFieldDecorator('rangeTime', {
+              initialValue: [this.props.record.begin_time,this.props.record.end_time],
               rules: [
                 {
                   required: true,
                   message: '不能为空',
                 },
               ],
-            })(<Input size="small" />)
+            })(<RangePicker size="small" />)
           }
         </FormItem>
         <FormItem {...formItemLayout} label="是否循环培训">
         {
-          getFieldDecorator('train_title', {
-            initialValue: this.props.record.train_title,
+          getFieldDecorator('is_loop', {
+            initialValue: this.props.record.is_loop||2,
             rules: [
               {
                 required: true,
                 message: '不能为空',
               },
             ],
-          })(<Input size="small" />)
+          })(<RadioGroup>
+            <Radio value={1}>是</Radio>
+            <Radio value={2}>否</Radio>
+          </RadioGroup>)
         }
         </FormItem>
-        <FormItem {...formItemLayout} label="是否循环培训">
+        <FormItem {...formItemLayout} label="循环周期">
           {
-            getFieldDecorator('train_title', {
-              initialValue: this.props.record.train_title,
+            getFieldDecorator('loop_type', {
+              initialValue: this.props.record.loop_type,
               rules: [
                 {
                   required: true,
                   message: '不能为空',
                 },
               ],
-            })(<Input size="small" />)
+            })(<Select>
+              <Option value="1">日</Option>
+              <Option value="2">周</Option>
+              <Option value="3">月</Option>
+              <Option value="4">季度</Option>
+              <Option value="5">年</Option>
+            </Select>)
           }
         </FormItem>
         <FormItem {...formItemLayout} label="培训项目描述">
           {
-            getFieldDecorator('train_title', {
-              initialValue: this.props.record.train_title,
-              rules: [
-                {
-                  required: true,
-                  message: '不能为空',
-                },
-              ],
+            getFieldDecorator('des', {
+              initialValue: this.props.record.des,
             })(<Input size="small"  type="textarea" rows="4" />)
           }
         </FormItem>

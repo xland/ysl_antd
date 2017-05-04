@@ -75,7 +75,7 @@ class EmployeeSave extends Component {
           {
             getFieldDecorator('sex', {
               initialValue: this.props.dialogRecord.sex||1,
-            })(<RadioGroup onChange={this.onChange}>
+            })(<RadioGroup>
               <Radio value={1}>男</Radio>
               <Radio value={2}>女</Radio>
             </RadioGroup>)

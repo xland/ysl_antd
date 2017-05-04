@@ -95,7 +95,7 @@ class Train extends Component {
     ajax.post("Hrm/Train/GetTrainByPage",{
       pager:{page_index:page-1}
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,
+      s.setState({dataArr:data.data,
         curPageIndex:page,
         rowCount:data.rowCount
       });
@@ -108,21 +108,35 @@ class Train extends Component {
       pager:{page_index:this.state.curPageIndex-1},
       searchTxt:v
     }).then(function ({data}) {
-      s.setState({accountArr:data.data,
+      s.setState({dataArr:data.data,
         rowCount:data.rowCount});
     })
   }
   render(){
     const columns = [{
-      title: '用户名',
-      dataIndex: 'account_name',
-      key: 'account_name',
+      title: '培训标题',
+      dataIndex: 'train_title',
+      key: 'train_title',
 
     }, {
-      title: '账户创建时间',
-      dataIndex: 'add_time',
-      key: 'add_time',
-      width: 180,
+      title: '是否循环',
+      dataIndex: 'is_loop',
+      key: 'is_loop'
+    }, {
+      title: '循环周期',
+      dataIndex: 'loop_type',
+      key: 'loop_type',
+    },{
+      title: '开始时间',
+      dataIndex: 'begin_time',
+      key: 'begin_time',
+      render:text=>{
+        return (text.replace(/T/,' '))
+      }
+    },{
+      title: '结束时间',
+      dataIndex: 'end_time',
+      key: 'end_time',
       render:text=>{
         return (text.replace(/T/,' '))
       }
@@ -138,7 +152,6 @@ class Train extends Component {
               <Tag color="red">删除</Tag>
             </Popconfirm>
             <Tag onClick={this.openDialog.bind(this,record,2)} color="blue">修改</Tag>
-            <Tag onClick={this.openRoleDialog.bind(this,record)} color="blue">设置角色</Tag>
           </div>
         )
       },
@@ -156,13 +169,13 @@ class Train extends Component {
           />
           <Tag onClick={this.openDialog.bind(this,{},1)} style={{float:"right"}} color="blue-inverse">新增培训项目</Tag>
         </div>
-        <Table columns={columns} scroll={{ y: this.state.tableHeight }}
+        <Table columns={columns}
                pagination={{size:"small",total:this.state.rowCount,showQuickJumper:true,defaultPageSize:28,
                  onChange:this.changePagerIndex,
                  showTotal:this.getPagerTxt,
                }}
                rowKey={record => record.id}
-               dataSource={this.state.accountArr}
+               dataSource={this.state.dataArr}
                bordered size="small" />
         <TrainSave title={this.state.dialogTitle}
                   record={this.state.dialogRecord}
