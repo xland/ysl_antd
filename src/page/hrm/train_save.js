@@ -86,7 +86,7 @@ class TrainSave extends Component {
           })(<Input size="small" />)
         }
         </FormItem>
-        <FormItem {...formItemLayout} label="循环周期">
+        <FormItem {...formItemLayout} label="是否循环培训">
           {
             getFieldDecorator('train_title', {
               initialValue: this.props.record.train_title,
@@ -97,6 +97,19 @@ class TrainSave extends Component {
                 },
               ],
             })(<Input size="small" />)
+          }
+        </FormItem>
+        <FormItem {...formItemLayout} label="培训项目描述">
+          {
+            getFieldDecorator('train_title', {
+              initialValue: this.props.record.train_title,
+              rules: [
+                {
+                  required: true,
+                  message: '不能为空',
+                },
+              ],
+            })(<Input size="small"  type="textarea" rows="4" />)
           }
         </FormItem>
       </Form>
